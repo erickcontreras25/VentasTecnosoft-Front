@@ -1,0 +1,193 @@
+<h2>PEDIDOS</h2>
+
+<div class="row">
+    <div class="col">
+        <form #miFormulario="ngForm">
+
+            <div class="mb-3 row">
+                <div class="col-sm-4">
+                    <label for="exampleFormControlSelect1">Cliente</label>
+                <select class="custom-select">
+                    <option *ngFor="let c of pedidos" value="c.idPedido">{{c.horaConfirmacion}}</option>
+                  </select>
+                </div>
+            </div>
+
+            
+
+            
+
+            <!-- AGREGADOS -->
+            <!-- <div class="mb-3 row">
+                <div class="input-group">
+                    <div class="col-sm-3">
+                        <label for="exampleFormControlSelect1">Producto</label>
+                        <select class="custom-select">
+                            <option *ngFor="let c of productos" value="c.idProducto">{{c.nombreProducto}}</option>
+                        </select>
+                    </div>
+    
+                    <div class="col-sm-2">
+                        <label for="exampleFormControlSelect1">Precio</label>
+                    </div>
+    
+                    <div class="col-sm-2">
+                        <label for="exampleFormControlSelect1">Cantidad</label>
+                        <input type="number" 
+                                class="form-control" 
+                                [(ngModel)]="pedido.pedidoProducto"
+                                name="cliente"
+                                placeholder="0">
+                    </div>
+    
+                    <div class="col-sm-2">
+                        <label for="exampleFormControlSelect1">SubTotal</label>
+                        <input type="number" 
+                                class="form-control" 
+                                [(ngModel)]="pedido.pedidoProducto"
+                                name="subTotal"
+                                placeholder="0"
+                                [disabled]="true">
+                    </div>
+
+                    <button class="btn btn-outline-primary"
+                            type="button">
+                        Agregar
+                    </button>
+                </div>
+            </div> -->
+
+
+            <!-- PEDIDO -->
+            <div class="mb-3 row">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Hora de confirmacion</th>
+                            <th>Cliente</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{pedido.horaConfirmacion | date:'YYYY-MMMM-dd HH:mm'}}</td>
+                            <td *ngIf="pedido.cliente.nombreCliente">{{pedido.cliente.nombreCliente}}</td>
+                            <td>{{pedido.aprobado}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- LISTA PRODUCTOS -->
+            <div class="mb-3 row">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Pedido</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of pedido.pedidoProducto; let i = index">
+                            <td>{{p.pedidoId}}</td>
+                            <td>{{p.productoId}}</td>
+                            <td>{{p.cantidad}}</td>
+                            <td>{{p.subTotal}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            
+            <div class="row">
+                <div class="col">
+                    <button type="submit"
+                            [disabled]="miFormulario.invalid"
+                            class="btn btn-primary float-end">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+
+         </form>
+    </div>
+</div>
+
+<hr>
+<div class="col">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Codigo Pedido</th>
+                <th>Hora Confirmacion</th>
+                <th>Cliente</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let p of pedidos">
+                <td>{{p.idPedido}}</td>
+                <td>{{p.horaConfirmacion | date:'MMMM-dd'}}</td>
+                <td>{{p.cliente.nombreCliente}}</td>
+                <td *ngIf="p.aprobado==false">Registrado</td>
+                <td *ngIf="p.aprobado==true">Confirmado</td>
+                <td>
+                    <button class="btn btn-info float-end"
+                            (click)="obtenerPedidoId(p.idPedido)">Ver pedido</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<h2>PEDIDOS POR FECHA</h2>
+<div class="mb-3 row">
+    <input type="date"
+            [(ngModel)]="fecha"
+            name="fecha"
+            (ngModelChange)="obtenerPedidoxFecha(fecha)">
+</div>
+
+<!-- PEDIDO -->
+<div class="mb-3 row">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Hora de confirmacion</th>
+            <th>Cliente</th>
+            <th>Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let p of pedidos2">
+            <td>{{p.horaConfirmacion | date:'YYYY-MMMM-dd HH:mm'}}</td>
+            <td *ngIf="p.cliente.nombreCliente">{{p.cliente.nombreCliente}}</td>
+            <td *ngIf="p.aprobado==false">Registrado</td>
+            <td *ngIf="p.aprobado==true">Confirmado</td>
+            
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let pp of p.pedidoProducto; let i = index">
+                        <td>{{pp.pedidoId}}</td>
+                        <td>{{pp.productoId}}</td>
+                        <td>{{pp.cantidad}}</td>
+                        <td>{{pp.subTotal}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </tr>
+        </tbody>
+    </table>
+</div>

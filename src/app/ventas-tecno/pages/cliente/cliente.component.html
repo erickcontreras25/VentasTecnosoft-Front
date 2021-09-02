@@ -1,0 +1,95 @@
+<h2>Clientes</h2>
+
+<div class="row">
+    <div class="col">
+        <form #miFormulario="ngForm">
+            <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label">Cliente</label>
+              <div class="col-sm-9">
+                <input type="text" 
+                       class="form-control" 
+                       [(ngModel)]="cliente.nombreCliente"
+                       name="cliente"
+                       minlength="5"
+                       maxlength="15"
+                       placeholder="Nombre de cliente">
+                       <span class="form-text text-danger">Debe tener al menos 5 caracteres</span>
+              </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <button type="submit"
+                            [disabled]="miFormulario.invalid"
+                            (click)="guardarCliente()"
+                            class="btn btn-primary float-end">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+
+          </form>
+    </div>
+</div>
+
+<hr>
+<div class="col">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Codigo Cliente</th>
+                <th>Nombre Cliente</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let c of clientes">
+                <td>{{c.idCliente}}</td>
+                <td>{{c.nombreCliente}}</td>
+                <td>
+                    <button class="btn btn-info float-end"
+                            (click)="obtenerPedidoxCliente(c.idCliente)">Ver pedidos</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- PEDIDO -->
+<div class="mb-3 row">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Hora de confirmacion</th>
+                <th>Cliente</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let p of pedidos">
+                <td>{{p.horaConfirmacion | date:'YYYY-MMMM-dd HH:mm'}}</td>
+                <td *ngIf="p.cliente.nombreCliente">{{p.cliente.nombreCliente}}</td>
+                <td *ngIf="p.aprobado==false">Registrado</td>
+                <td *ngIf="p.aprobado==true">Confirmado</td>
+                
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Pedido</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let pp of p.pedidoProducto; let i = index">
+                            <td>{{pp.pedidoId}}</td>
+                            <td>{{pp.productoId}}</td>
+                            <td>{{pp.cantidad}}</td>
+                            <td>{{pp.subTotal}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </tr>
+        </tbody>
+    </table>
+</div>
